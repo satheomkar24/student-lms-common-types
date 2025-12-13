@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // ===== Output =====
+    "rootDir": "src", // Your source code
+    "outDir": "dist", // Where compiled files go
+    "declaration": true, // Generate .d.ts types
+    "declarationMap": false, // Helpful for debugging type defs
+    "sourceMap": false, // Optional, for easier debugging
+
+    // ===== Module System =====
+    "target": "ES2019", // Reasonable modern JS target
+    "module": "ESNext", // Modern Node module system (supports ESM)
+    "moduleResolution": "node",
+    "esModuleInterop": true, // Allows default imports from CommonJS
+    "forceConsistentCasingInFileNames": true,
+
+    // ===== Type Checking =====
+    "strict": true, // Enable all strict checks
+    "skipLibCheck": true, // Skip .d.ts type checking for dependencies
+    "jsx": "react-jsx",
+
+    // ===== Environment =====
+    "lib": ["ES2022", "DOM", "DOM.Iterable"], // Include modern JS features
+    "types": [], // Don’t include extra global types (clean)
+
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/utils/*"],
+      "*": ["src/types/*"]
+    },
+    "allowSyntheticDefaultImports": true // Easier import syntax
+  },
+  "include": ["src", "types/declarations.d.ts"], // Compile only your source
+  "exclude": ["node_modules", "dist", "docs"]
+}

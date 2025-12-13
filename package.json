@@ -1,0 +1,34 @@
+{
+  "name": "@satheomkar24/common-types",
+  "version": "1.0.1",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config tsup.config.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satheomkar24/student-lms-common-types.git"
+  },
+  "bugs": {
+    "url": "https://github.com/satheomkar24/student-lms-common-types/issues"
+  },
+  "homepage": "https://github.com/satheomkar24/student-lms-common-types#readme",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "tsc-alias": "^1.8.16",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
+  }
+}
