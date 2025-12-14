@@ -25,6 +25,11 @@
 
     "baseUrl": ".",
     "paths": {
+      "@components/*": ["src/components/*"],
+      "@context/*": ["src/context/*"],
+      "@guards/*": ["src/guards/*"],
+      "@schema/*": ["src/schema/*"],
+      "@services/*": ["src/services/*"],
       "@utils/*": ["src/utils/*"],
       "*": ["src/types/*"]
     },
