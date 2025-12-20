@@ -1,7 +1,7 @@
 import { regex } from "@utils/regex";
 import {
   IChangePassword,
-  IForgot,
+  IForgotPassword,
   ILogin,
   IRegister,
   IResetPassword,
@@ -20,7 +20,7 @@ export const loginInitialValues: ILogin = {
   password: "",
 };
 
-export const forgotPasswordInitialValues: IForgot = {
+export const forgotPasswordInitialValues: IForgotPassword = {
   email: "",
 };
 

@@ -8,7 +8,7 @@
     "sourceMap": false, // Optional, for easier debugging
 
     // ===== Module System =====
-    "target": "ES2019", // Reasonable modern JS target
+    "target": "ES2022", // Reasonable modern JS target
     "module": "ESNext", // Modern Node module system (supports ESM)
     "moduleResolution": "node",
     "esModuleInterop": true, // Allows default imports from CommonJS

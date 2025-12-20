@@ -10,12 +10,12 @@ import { useContext } from "react";
 import toast from "react-hot-toast";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
-interface ResetPasswordProps {
+type ResetPasswordProps = {
   onSubmit: (
     values: IResetPassword,
     formikHelpers: FormikHelpers<IResetPassword>
   ) => Promise<void>;
-}
+};
 
 export const ResetPasswordForm = ({ onSubmit }: ResetPasswordProps) => {
   const initialValues = resetPasswordInitialValues;

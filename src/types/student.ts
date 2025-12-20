@@ -1,6 +1,6 @@
 import { ICourse } from "course";
 
-export interface IStudent {
+export type IStudent = {
   id: string;
   name: string;
   image?: string;
@@ -8,10 +8,10 @@ export interface IStudent {
   email: string;
   courses: ICourse[];
   payment: IPayment[];
-}
+};
 
-export interface IPayment {
+export type IPayment = {
   id: string;
   amount: number;
   course: ICourse;
-}
+};

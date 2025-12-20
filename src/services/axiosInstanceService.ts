@@ -4,15 +4,20 @@ import axios, {
   type AxiosResponse,
 } from "axios";
 import { storageService } from "./storageService";
+import { IAuthTokens } from "auth";
 
 export class AxiosInstanceService {
   private api: AxiosInstance;
-  private ensureValidToken: () => Promise<void>;
+  private baseURL: string;
 
-  constructor(baseURL: string, ensureValidToken: () => Promise<void>) {
-    this.ensureValidToken = ensureValidToken;
+  // 🔒 Refresh handling
+  private isRefreshing = false;
+  private refreshQueue: Array<(token: string) => void> = [];
+
+  constructor(baseURL: string) {
+    this.baseURL = baseURL;
     this.api = axios.create({
-      baseURL: baseURL || "http://localhost:6012/api",
+      baseURL: baseURL || "http://localhost:3000/api",
       timeout: 10000000,
       headers: {
         "Content-Type": "application/json",
@@ -23,58 +28,117 @@ export class AxiosInstanceService {
   }
 
   private setupInterceptors(): void {
-    // Request interceptor
+    // =========================
+    // Request Interceptor
+    // =========================
     this.api.interceptors.request.use(
       (config) => {
-        this.ensureValidToken();
-        const token = storageService.getLocal<string>("authToken");
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+        const accessToken = storageService.getLocal<string>("authToken");
+
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
+
         return config;
       },
-      (error) => {
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
-    // Response interceptor
+    // =========================
+    // Response Interceptor
+    // =========================
     this.api.interceptors.response.use(
-      (response: AxiosResponse) => {
-        return response;
-      },
-      (error) => {
-        const url = error.config?.url || "";
-        let errorMessage = "";
+      (response: AxiosResponse) => response,
+      async (error) => {
+        const originalRequest = error.config as
+          | (AxiosRequestConfig & { _retry?: boolean })
+          | undefined;
 
-        if (error.response?.data?.message) {
-          errorMessage = error.response.data.message;
-        } else {
-          errorMessage = `Error Status: ${error.response?.status}\nMessage: ${error.message}`;
+        if (
+          error.response?.status === 401 &&
+          originalRequest &&
+          !originalRequest._retry
+        ) {
+          originalRequest._retry = true;
+
+          try {
+            const newToken = await this.refreshAccessToken();
+
+            originalRequest.headers = {
+              ...originalRequest.headers,
+              Authorization: `Bearer ${newToken}`,
+            };
+
+            return this.api(originalRequest);
+          } catch {
+            this.handleUnauthorized();
+          }
         }
 
-        if (error.response?.status === 401) {
-          this.handleUnauthorized();
-        }
-
-        return Promise.reject(new Error(errorMessage));
+        return Promise.reject(error);
       }
     );
   }
 
+  // =========================
+  // Refresh Token Logic
+  // =========================
+  private async refreshAccessToken(): Promise<string> {
+    if (this.isRefreshing) {
+      return new Promise((resolve) => {
+        this.refreshQueue.push(resolve);
+      });
+    }
+
+    this.isRefreshing = true;
+
+    try {
+      const refreshToken = storageService.getLocal<string>("refreshToken");
+
+      if (!refreshToken) {
+        throw new Error("Refresh token missing");
+      }
+
+      // ⚠️ Use raw axios to avoid interceptor loop
+      const response = await axios.post<IAuthTokens>(
+        `${this.baseURL}/auth/refresh`,
+        { refreshToken }
+      );
+
+      const newAccessToken = response.data.accessToken;
+      const newRefreshToken = response.data.refreshToken;
+
+      storageService.setLocal("authToken", newAccessToken);
+      storageService.setLocal("refreshToken", newRefreshToken);
+
+      // Notify queued requests
+      this.refreshQueue.forEach((cb) => cb(newAccessToken));
+      this.refreshQueue = [];
+
+      return newAccessToken;
+    } finally {
+      this.isRefreshing = false;
+    }
+  }
+
+  // =========================
+  // Logout / Unauthorized
+  // =========================
   private handleUnauthorized(): void {
     storageService.removeLocal("authToken");
-    storageService.removeLocal("userData");
     storageService.removeLocal("refreshToken");
+    storageService.removeLocal("userData");
 
-    if (!window.location.pathname.includes("auth/login")) {
+    if (!window.location.pathname.includes("/auth/login")) {
       setTimeout(() => {
         window.location.href = "/auth/login";
       }, 2000);
     }
   }
 
-  // HTTP methods
+  // =========================
+  // HTTP Methods
+  // =========================
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.api.get<T>(url, config);
     return response.data;
@@ -112,7 +176,9 @@ export class AxiosInstanceService {
     return response.data;
   }
 
-  // Get axios instance for other services
+  // =========================
+  // Access Axios Instance
+  // =========================
   getAxiosInstance(): AxiosInstance {
     return this.api;
   }

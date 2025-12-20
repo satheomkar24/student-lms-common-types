@@ -1,6 +1,6 @@
 import { IInstructor } from "instructor";
 
-export interface ICourse {
+export type ICourse = {
   id: string;
   name: string;
   image: string;
@@ -13,22 +13,22 @@ export interface ICourse {
   faqs: IFAQ[];
   instructor: IInstructor;
   rating: IRating;
-}
+};
 
-export interface ILesson {
+export type ILesson = {
   id: string;
   name: string;
   video: string;
   duration: string;
-}
+};
 
-export interface IFAQ {
+export type IFAQ = {
   id: string;
   question: string;
   answer: string;
-}
+};
 
-export interface IRating {
+export type IRating = {
   id: string;
   1: number;
   2: number;
@@ -37,4 +37,4 @@ export interface IRating {
   5: number;
   average: number;
   course: ICourse;
-}
+};

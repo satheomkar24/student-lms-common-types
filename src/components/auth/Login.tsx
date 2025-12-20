@@ -8,12 +8,12 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
-interface LoginProps {
+type LoginProps = {
   onSubmit: (
     values: ILogin,
     formikHelpers: FormikHelpers<ILogin>
   ) => Promise<void>;
-}
+};
 
 export const LoginForm = ({ onSubmit }: LoginProps) => {
   const initialValues = loginInitialValues;

@@ -2,11 +2,11 @@ import { RingLoader } from "react-spinners";
 import React, { useContext } from "react";
 import { SpinnerContext } from "@context/SpinnerContext";
 
-interface SpinnerProps {
+type SpinnerProps = {
   size?: number;
   color?: string;
   LoaderComponent?: React.ComponentType<any>;
-}
+};
 
 export const Spinner = ({
   size = 80,

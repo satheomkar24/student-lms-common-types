@@ -1,6 +1,6 @@
 import { ICourse } from "course";
 
-export interface IInstructor {
+export type IInstructor = {
   id: string;
   name: string;
   profession: string;
@@ -12,17 +12,17 @@ export interface IInstructor {
   contactDetails: IContactDetails;
   socialLinks: ISocialLinks;
   courses: ICourse[];
-}
+};
 
-export interface IContactDetails {
+export type IContactDetails = {
   email: string;
   mobile: string;
   address: string;
-}
+};
 
-export interface ISocialLinks {
+export type ISocialLinks = {
   linkedin?: string;
   twitter?: string;
   facebook?: string;
   instagram?: string;
-}
+};

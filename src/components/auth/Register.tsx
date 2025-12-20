@@ -8,12 +8,12 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
-interface RegisterProps {
+type RegisterProps = {
   onSubmit: (
     values: IRegister,
     formikHelpers: FormikHelpers<IRegister>
   ) => Promise<void>;
-}
+};
 
 export const RegisterForm = ({ onSubmit }: RegisterProps) => {
   const initialValues = registerInitialValues;

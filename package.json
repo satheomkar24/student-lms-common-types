@@ -46,6 +46,7 @@
     "yup": "^1.7.1"
   },
   "dependencies": {
+    "jodit-react": "^5.2.38",
     "react-multi-date-picker": "^4.5.2",
     "react-select": "^5.10.2",
     "react-spinners": "^0.17.0"

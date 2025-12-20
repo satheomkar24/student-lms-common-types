@@ -5,13 +5,14 @@ import Select from "react-select";
 import { IconType } from "react-icons";
 import { Button, FormGroup, Label } from "reactstrap";
 import { FiX } from "react-icons/fi";
+import { Editor } from "@components/Editor";
 
-export interface IFormRender {
+export type IFormRender = {
   field: FormField;
   colSize: string;
-}
+};
 
-export interface FormField<T extends HTMLElement = HTMLElement> {
+export type FormField<T extends HTMLElement = HTMLElement> = {
   id: string;
   type:
     | "text"
@@ -23,7 +24,8 @@ export interface FormField<T extends HTMLElement = HTMLElement> {
     | "datePicker"
     | "dateRange"
     | "button"
-    | "checkbox";
+    | "checkbox"
+    | "editor";
   buttonType?: "button" | "submit" | "reset" | undefined;
   label?: string;
   value?: any;
@@ -34,6 +36,7 @@ export interface FormField<T extends HTMLElement = HTMLElement> {
   onClick?: () => void;
   onDateChange?: (dates: DateObject | DateObject[] | null) => void;
   onSelectChange?: (value: ISelectType[]) => void;
+  onEditorChange?: (value: string) => void;
   icon?: IconType;
   color?:
     | "primary"
@@ -62,7 +65,7 @@ export interface FormField<T extends HTMLElement = HTMLElement> {
   clearable?: boolean;
   errors?: FormikErrors<any>;
   touched?: FormikTouched<any>;
-}
+};
 
 export const renderFormField = (field: FormField): React.ReactElement => {
   const {
@@ -77,6 +80,7 @@ export const renderFormField = (field: FormField): React.ReactElement => {
     onClick = () => {},
     onDateChange = () => {},
     onSelectChange = () => {},
+    onEditorChange = () => {},
     icon: Icon,
     color = "primary",
     size = undefined,
@@ -230,6 +234,16 @@ export const renderFormField = (field: FormField): React.ReactElement => {
           {Icon && <Icon className="ms-1" />}
           {label}
         </Button>
+      );
+
+    case "editor":
+      return (
+        <Editor
+          key={id}
+          content={value}
+          setContent={onEditorChange}
+          placeholder={placeholder}
+        />
       );
 
     default:

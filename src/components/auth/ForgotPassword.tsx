@@ -4,28 +4,28 @@ import {
   forgotPasswordValidationSchema,
 } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
-import { IForgot } from "auth";
+import { IForgotPassword } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
-interface ForgotProps {
+type ForgotProps = {
   onSubmit: (
-    values: IForgot,
-    formikHelpers: FormikHelpers<IForgot>
+    values: IForgotPassword,
+    formikHelpers: FormikHelpers<IForgotPassword>
   ) => Promise<void>;
-}
+};
 
-export const ForgotForm = ({ onSubmit }: ForgotProps) => {
+export const ForgotPasswordForm = ({ onSubmit }: ForgotProps) => {
   const initialValues = forgotPasswordInitialValues;
 
   const { setIsLoading } = useContext(SpinnerContext);
 
   const submitHandler = async (
-    values: IForgot,
-    formikHelpers: FormikHelpers<IForgot>
+    values: IForgotPassword,
+    formikHelpers: FormikHelpers<IForgotPassword>
   ) => {
     try {
       setIsLoading(true);
@@ -38,7 +38,7 @@ export const ForgotForm = ({ onSubmit }: ForgotProps) => {
     }
   };
 
-  const renderFormFields = (formikProps: FormikProps<IForgot>) => {
+  const renderFormFields = (formikProps: FormikProps<IForgotPassword>) => {
     const { errors, touched } = formikProps;
     const formFields: IFormRender[] = [
       {

@@ -10,12 +10,12 @@ import { useContext } from "react";
 import toast from "react-hot-toast";
 import { Card, CardBody } from "reactstrap";
 
-interface ChangePasswordProps {
+type ChangePasswordProps = {
   onSubmit: (
     values: IChangePassword,
     formikHelpers: FormikHelpers<IChangePassword>
   ) => Promise<void>;
-}
+};
 
 export const ChangePasswordForm = ({ onSubmit }: ChangePasswordProps) => {
   const initialValues = changePasswordInitialValues;
