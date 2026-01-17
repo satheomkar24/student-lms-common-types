@@ -1,11 +1,12 @@
 import { SpinnerContext } from "@context/SpinnerContext";
 import { loginInitialValues, loginValidationSchema } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
+import { showError } from "@utils/showError";
 import { ILogin } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 type LoginProps = {
@@ -19,6 +20,7 @@ export const LoginForm = ({ onSubmit }: LoginProps) => {
   const initialValues = loginInitialValues;
 
   const { setIsLoading } = useContext(SpinnerContext);
+  const navigate = useNavigate();
 
   const submitHandler = async (
     values: ILogin,
@@ -28,8 +30,10 @@ export const LoginForm = ({ onSubmit }: LoginProps) => {
       setIsLoading(true);
       await onSubmit(values, formikHelpers);
       toast.success("Login successful");
-    } catch (error) {
-      toast.error("Login failed");
+      navigate("/");
+    } catch (error: any) {
+      console.log("📢[Login.tsx:34]: error: ", error);
+      showError(error, "Login failed");
     } finally {
       setIsLoading(false);
     }

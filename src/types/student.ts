@@ -1,7 +1,7 @@
 import { ICourse } from "course";
 
 export type IStudent = {
-  id: string;
+  _id: string;
   name: string;
   image?: string;
   password: string;
@@ -11,7 +11,7 @@ export type IStudent = {
 };
 
 export type IPayment = {
-  id: string;
+  _id: string;
   amount: number;
   course: ICourse;
 };

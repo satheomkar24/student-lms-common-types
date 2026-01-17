@@ -4,6 +4,7 @@ import {
   forgotPasswordValidationSchema,
 } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
+import { showError } from "@utils/showError";
 import { IForgotPassword } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
@@ -31,8 +32,9 @@ export const ForgotPasswordForm = ({ onSubmit }: ForgotProps) => {
       setIsLoading(true);
       await onSubmit(values, formikHelpers);
       toast.success("Reset link sent to your email");
-    } catch (error) {
-      toast.error("Failed to send reset link");
+    } catch (error: any) {
+      console.log("📢[ForgotPassword.tsx:35]: error: ", error);
+      showError(error, "Failed to send reset link");
     } finally {
       setIsLoading(false);
     }

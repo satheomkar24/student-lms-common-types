@@ -1,7 +1,7 @@
 import { IInstructor } from "instructor";
 
 export type ICourse = {
-  id: string;
+  _id: string;
   name: string;
   image: string;
   summery: string;
@@ -13,23 +13,28 @@ export type ICourse = {
   faqs: IFAQ[];
   instructor: IInstructor;
   rating: IRating;
+  publish:boolean
+};
+
+export type ICoursePayload = Omit<ICourse, "_id" | "rating" | "instructor"> & {
+  instructor: string;
 };
 
 export type ILesson = {
-  id: string;
+  _id: string;
   name: string;
   video: string;
   duration: string;
 };
 
 export type IFAQ = {
-  id: string;
+  _id: string;
   question: string;
   answer: string;
 };
 
 export type IRating = {
-  id: string;
+  _id: string;
   1: number;
   2: number;
   3: number;

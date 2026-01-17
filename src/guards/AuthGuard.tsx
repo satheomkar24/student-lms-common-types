@@ -9,21 +9,21 @@ type PropTypes = {
 
 export const AuthGuard = ({ children }: PropTypes) => {
   const userData = storageService.getLocal<IUser>("userData");
-  const authToken = storageService.getLocal<string>("authToken");
+  const accessToken = storageService.getLocal<string>("accessToken");
   const navigate = useNavigate();
 
   // perform logout if unauthenticated
   useEffect(() => {
-    if (!authToken || !userData?.email) {
+    if (!accessToken || !userData?.email) {
       storageService.removeLocal("userData");
-      storageService.removeLocal("authToken");
+      storageService.removeLocal("accessToken");
       storageService.removeLocal("refreshToken");
       navigate("/auth/login", { replace: true });
     }
   }, []);
 
   // while logout is running (render nothing)
-  if (!authToken || !userData?.email) {
+  if (!accessToken || !userData?.email) {
     return null;
   }
 

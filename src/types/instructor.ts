@@ -1,7 +1,7 @@
 import { ICourse } from "course";
 
 export type IInstructor = {
-  id: string;
+  _id: string;
   name: string;
   profession: string;
   courseCount: number;

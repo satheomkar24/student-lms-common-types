@@ -4,6 +4,7 @@ import {
   changePasswordValidationSchema,
 } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
+import { showError } from "@utils/showError";
 import { IChangePassword } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
@@ -30,8 +31,9 @@ export const ChangePasswordForm = ({ onSubmit }: ChangePasswordProps) => {
       setIsLoading(true);
       await onSubmit(values, formikHelpers);
       toast.success("Password changed successfully");
-    } catch (error) {
-      toast.error("Failed to change password");
+    } catch (error: any) {
+      console.log("📢[ChangePassword.tsx:34]: error: ", error);
+      showError(error, "Failed to change password");
     } finally {
       setIsLoading(false);
     }

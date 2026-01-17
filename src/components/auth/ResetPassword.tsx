@@ -4,10 +4,12 @@ import {
   resetPasswordValidationSchema,
 } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
+import { showError } from "@utils/showError";
 import { IResetPassword } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 type ResetPasswordProps = {
@@ -21,6 +23,7 @@ export const ResetPasswordForm = ({ onSubmit }: ResetPasswordProps) => {
   const initialValues = resetPasswordInitialValues;
 
   const { setIsLoading } = useContext(SpinnerContext);
+  const navigate = useNavigate();
 
   const submitHandler = async (
     values: IResetPassword,
@@ -30,8 +33,10 @@ export const ResetPasswordForm = ({ onSubmit }: ResetPasswordProps) => {
       setIsLoading(true);
       await onSubmit(values, formikHelpers);
       toast.success("Password reset successfully");
-    } catch (error) {
-      toast.error("Failed to reset password");
+      navigate("/auth/login");
+    } catch (error: any) {
+      console.log("📢[ResetPassword.tsx:37]: error: ", error);
+      showError(error, "Failed to reset password");
     } finally {
       setIsLoading(false);
     }

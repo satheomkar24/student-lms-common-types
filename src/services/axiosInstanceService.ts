@@ -33,7 +33,7 @@ export class AxiosInstanceService {
     // =========================
     this.api.interceptors.request.use(
       (config) => {
-        const accessToken = storageService.getLocal<string>("authToken");
+        const accessToken = storageService.getLocal<string>("accessToken");
 
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -108,7 +108,7 @@ export class AxiosInstanceService {
       const newAccessToken = response.data.accessToken;
       const newRefreshToken = response.data.refreshToken;
 
-      storageService.setLocal("authToken", newAccessToken);
+      storageService.setLocal("accessToken", newAccessToken);
       storageService.setLocal("refreshToken", newRefreshToken);
 
       // Notify queued requests
@@ -125,7 +125,7 @@ export class AxiosInstanceService {
   // Logout / Unauthorized
   // =========================
   private handleUnauthorized(): void {
-    storageService.removeLocal("authToken");
+    storageService.removeLocal("accessToken");
     storageService.removeLocal("refreshToken");
     storageService.removeLocal("userData");
 

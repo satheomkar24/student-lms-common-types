@@ -1,6 +1,12 @@
 import { ISelectType } from "common";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { ErrorMessage, Field, FormikErrors, FormikTouched } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  FormikErrors,
+  FormikTouched,
+  useFormikContext,
+} from "formik";
 import Select from "react-select";
 import { IconType } from "react-icons";
 import { Button, FormGroup, Label } from "reactstrap";
@@ -102,6 +108,8 @@ export const renderFormField = (field: FormField): React.ReactElement => {
     errors,
     touched,
   } = field;
+
+  // const { errors, touched } = useFormikContext<any>();
 
   const renderLabel = () => {
     if (!label) return null;

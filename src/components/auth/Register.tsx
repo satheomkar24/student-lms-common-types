@@ -1,11 +1,12 @@
 import { SpinnerContext } from "@context/SpinnerContext";
 import { registerInitialValues, registerValidationSchema } from "@schema/auth";
 import { IFormRender, renderFieldRowWithSizes } from "@utils/formFieldRender";
+import { showError } from "@utils/showError";
 import { IRegister } from "auth";
 import { Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useContext } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
 type RegisterProps = {
@@ -19,6 +20,7 @@ export const RegisterForm = ({ onSubmit }: RegisterProps) => {
   const initialValues = registerInitialValues;
 
   const { setIsLoading } = useContext(SpinnerContext);
+  const navigate = useNavigate();
 
   const submitHandler = async (
     values: IRegister,
@@ -28,8 +30,10 @@ export const RegisterForm = ({ onSubmit }: RegisterProps) => {
       setIsLoading(true);
       await onSubmit(values, formikHelpers);
       toast.success("Registration successful");
-    } catch (error) {
-      toast.error("Registration failed");
+      navigate("/auth/login");
+    } catch (error: any) {
+      console.log("📢[Register.tsx:34]: error: ", error);
+      showError(error, "Registration failed");
     } finally {
       setIsLoading(false);
     }
