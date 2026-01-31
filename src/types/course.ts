@@ -13,7 +13,9 @@ export type ICourse = {
   faqs: IFAQ[];
   instructor: IInstructor;
   rating: IRating;
-  publish:boolean
+  publish: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type ICoursePayload = Omit<ICourse, "_id" | "rating" | "instructor"> & {

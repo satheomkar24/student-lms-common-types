@@ -1,4 +1,5 @@
 import { ICourse } from "course";
+import { Payload } from "index";
 
 export type IInstructor = {
   _id: string;
@@ -12,6 +13,8 @@ export type IInstructor = {
   contactDetails: IContactDetails;
   socialLinks: ISocialLinks;
   courses: ICourse[];
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type IContactDetails = {
@@ -26,3 +29,8 @@ export type ISocialLinks = {
   facebook?: string;
   instagram?: string;
 };
+
+export type IInstructorPayload = Omit<
+  Payload<IInstructor>,
+  "courseCount" | "totalStudents" | "rating" | "courses"
+>;

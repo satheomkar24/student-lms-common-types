@@ -1,12 +1,6 @@
 import { ISelectType } from "common";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import {
-  ErrorMessage,
-  Field,
-  FormikErrors,
-  FormikTouched,
-  useFormikContext,
-} from "formik";
+import { ErrorMessage, Field, FormikErrors, FormikTouched } from "formik";
 import Select from "react-select";
 import { IconType } from "react-icons";
 import { Button, FormGroup, Label } from "reactstrap";
@@ -262,7 +256,7 @@ export const renderFormField = (field: FormField): React.ReactElement => {
 // Utility function to render fields with custom column sizes
 export const renderFieldRowWithSizes = (
   fieldsWithSizes: IFormRender[],
-  className = "g-3"
+  className = "g-3",
 ): React.ReactElement => {
   return (
     <div

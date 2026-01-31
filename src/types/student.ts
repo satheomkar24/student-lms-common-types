@@ -8,10 +8,17 @@ export type IStudent = {
   email: string;
   courses: ICourse[];
   payment: IPayment[];
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type IPayment = {
   _id: string;
   amount: number;
   course: ICourse;
+};
+
+export type IStudentPayload = {
+  name: string;
+  image?: string;
 };

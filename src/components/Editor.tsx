@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import JoditEditor from "jodit-react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   placeholder?: string;
@@ -8,21 +7,45 @@ type Props = {
 };
 
 export const Editor = ({ placeholder, content, setContent }: Props) => {
-  const editor = useRef(null);
+  const editorRef = useRef<any>(null);
+  const [JoditEditor, setJoditEditor] =
+    useState<React.ComponentType<any> | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let mounted = true;
+
+    import("jodit-react")
+      .then((mod) => {
+        if (mounted) {
+          setJoditEditor(() => mod.default);
+        }
+      })
+      .catch(() => {
+        console.error("Failed to load Jodit editor");
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (!JoditEditor) return null; // ⛔ backend & SSR safe
 
   const config = {
-    readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-    placeholder: placeholder || "Start typings...",
+    readonly: false,
+    placeholder: placeholder || "Start typing...",
     height: 350,
   };
 
   return (
     <JoditEditor
-      ref={editor}
+      ref={editorRef}
       value={content}
       config={config}
-      tabIndex={1} // tabIndex of textarea
-      onBlur={(newContent: string) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+      tabIndex={1}
+      onBlur={(newContent: string) => setContent(newContent)}
     />
   );
 };
